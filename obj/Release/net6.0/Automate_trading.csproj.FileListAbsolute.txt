@@ -1,0 +1,12 @@
+C:\Users\teren\OneDrive\Documenti\cAlgo\Sources\Robots\Automate_trading\Automate_trading\obj\Release\net6.0\Automate_trading.csproj.AssemblyReference.cache
+C:\Users\teren\OneDrive\Documenti\cAlgo\Sources\Robots\Automate_trading\Automate_trading\obj\Release\net6.0\Automate_trading.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\teren\OneDrive\Documenti\cAlgo\Sources\Robots\Automate_trading\Automate_trading\obj\Release\net6.0\Automate_trading.AssemblyInfoInputs.cache
+C:\Users\teren\OneDrive\Documenti\cAlgo\Sources\Robots\Automate_trading\Automate_trading\obj\Release\net6.0\Automate_trading.AssemblyInfo.cs
+C:\Users\teren\OneDrive\Documenti\cAlgo\Sources\Robots\Automate_trading\Automate_trading\obj\Release\net6.0\Automate_trading.csproj.CoreCompileInputs.cache
+C:\Users\teren\OneDrive\Documenti\cAlgo\Sources\Robots\Automate_trading\Automate_trading\bin\Release\net6.0\Automate_trading.deps.json
+C:\Users\teren\OneDrive\Documenti\cAlgo\Sources\Robots\Automate_trading\Automate_trading\bin\Release\net6.0\Automate_trading.dll
+C:\Users\teren\OneDrive\Documenti\cAlgo\Sources\Robots\Automate_trading\Automate_trading\bin\Release\net6.0\Automate_trading.pdb
+C:\Users\teren\OneDrive\Documenti\cAlgo\Sources\Robots\Automate_trading\Automate_trading\obj\Release\net6.0\Automate_trading.dll
+C:\Users\teren\OneDrive\Documenti\cAlgo\Sources\Robots\Automate_trading\Automate_trading\obj\Release\net6.0\ref\Automate_trading.dll
+C:\Users\teren\OneDrive\Documenti\cAlgo\Sources\Robots\Automate_trading\Automate_trading\obj\Release\net6.0\Automate_trading.pdb
+C:\Users\teren\OneDrive\Documenti\cAlgo\Sources\Robots\Automate_trading\Automate_trading\obj\Release\net6.0\refint\Automate_trading.dll

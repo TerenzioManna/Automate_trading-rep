@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "AoY0ph4oBo8PqLW59P3YCn99vt/s8JqQeZpSGL6NK7U5XkvIE8/rHr/oEimQfHukEYdPf4T5mRkUfpqs4bB9mQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\teren\\OneDrive\\Documenti\\cAlgo\\Sources\\Robots\\Automate_trading\\Automate_trading\\Automate_trading.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\teren\\.nuget\\packages\\ctrader.automate\\1.0.7\\ctrader.automate.1.0.7.nupkg.sha512",
+    "C:\\Users\\teren\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
+    "C:\\Users\\teren\\.nuget\\packages\\telegram.bot\\18.0.0\\telegram.bot.18.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

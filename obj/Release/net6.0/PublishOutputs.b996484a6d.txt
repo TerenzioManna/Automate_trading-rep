@@ -1,0 +1,6 @@
+C:\Users\teren\OneDrive\Documenti\cAlgo\Sources\Robots\Automate_trading\Automate_trading\bin\Release\net6.0\publish\Automate_trading.dll
+C:\Users\teren\OneDrive\Documenti\cAlgo\Sources\Robots\Automate_trading\Automate_trading\bin\Release\net6.0\publish\Automate_trading.deps.json
+C:\Users\teren\OneDrive\Documenti\cAlgo\Sources\Robots\Automate_trading\Automate_trading\bin\Release\net6.0\publish\Automate_trading.pdb
+C:\Users\teren\OneDrive\Documenti\cAlgo\Sources\Robots\Automate_trading\Automate_trading\bin\Release\net6.0\publish\cAlgo.API.dll
+C:\Users\teren\OneDrive\Documenti\cAlgo\Sources\Robots\Automate_trading\Automate_trading\bin\Release\net6.0\publish\Newtonsoft.Json.dll
+C:\Users\teren\OneDrive\Documenti\cAlgo\Sources\Robots\Automate_trading\Automate_trading\bin\Release\net6.0\publish\Telegram.Bot.dll
