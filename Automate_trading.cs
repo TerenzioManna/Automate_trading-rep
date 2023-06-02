@@ -22,22 +22,25 @@ namespace cAlgo.Robots
         [Parameter("Lot Size", Group = "Volume", DefaultValue = 0.5, MinValue = 0.01, Step = 0.01)]
         public double LotSize { get; set; }
 
-        [Parameter("Take Profit", Group = "Protection (pips)", DefaultValue = 20, MinValue = 1, Step = 0.5)]
+        [Parameter("Take Profit", Group = "Protection (pips)", DefaultValue = 50, MinValue = 1, Step = 1)]
         public double TakeProfitInPips { get; set; }
 
-        [Parameter("Stop Loss", Group = "Protection (pips)", DefaultValue = 40, MinValue = 0, Step = 1)]
+        [Parameter("Stop Loss", Group = "Protection (pips)", DefaultValue = 50, MinValue = 0, Step = 1)]
         public double StopLossInPips { get; set; }
 
         [Parameter("Max Spread", Group = "Protection (pips)", DefaultValue = 1, MinValue = 0, Step = 0.1)]
         public double maxSpread { get; set; }
+        
+        [Parameter("Max volume tick", Group = "Protection (pips)", DefaultValue = 1, MinValue = 1, Step = 10)]
+        public int maxVolumeTick { get; set; }
 
         [Parameter("Enable", Group = "Protection Break-Even (pips)", DefaultValue = false)]
         public bool Enable_breakEven { get; set; }
 
-        [Parameter("Break-Even Trigger", Group = "Protection Break-Even (pips)", DefaultValue = 1, MinValue = 0, Step = 0.5)]
+        [Parameter("Break-Even Trigger", Group = "Protection Break-Even (pips)", DefaultValue = 1, MinValue = 0, Step = 1)]
         public double BreakEvenPips { get; set; }
 
-        [Parameter("Break-Even Extra", Group = "Protection Break-Even (pips)", DefaultValue = 1, MinValue = 0, Step = 0.5)]
+        [Parameter("Break-Even Extra", Group = "Protection Break-Even (pips)", DefaultValue = 1, MinValue = 0, Step = 1)]
         public double BreakEvenExtraPips { get; set; }
 
         [Parameter("Run on opening bar", Group = "Strategy", DefaultValue = false)]
@@ -52,14 +55,8 @@ namespace cAlgo.Robots
         [Parameter("Stop new trade when total daily profit > 0", Group = "Strategy", DefaultValue = false)]
         public bool StopWhenWin { get; set; }
 
-        [Parameter("Force to close position daily", Group = "Strategy", DefaultValue = false)]
-        public bool closePosition { get; set; }
-
         [Parameter("Max trades in a day", Group = "Strategy", DefaultValue = 1, MinValue = 1, Step = 1)]
         public int maxTrades { get; set; }
-
-        [Parameter("Max volume tick", Group = "Strategy", DefaultValue = 1, MinValue = 1, Step = 10)]
-        public int maxVolumeTick { get; set; }
 
         [Parameter("Enable", Group = "Strategy (Martingala)", DefaultValue = false)]
         public bool Martingala { get; set; }
@@ -67,52 +64,52 @@ namespace cAlgo.Robots
         [Parameter("Lot adding", Group = "Strategy (Martingala)", DefaultValue = 0.1, MinValue = 0, Step = 0.1)]
         public double lotAdding { get; set; }
 
-        [Parameter("SB1", Group = "Strategy Buy (Compra = 1, Vendi = 2)", DefaultValue = 0, MinValue = 1, MaxValue = 2, Step = 1)]
+        [Parameter("SB1", Group = "Strategy Buy (Compra = 1, Vendi = 2)", DefaultValue = 1, MinValue = 1, MaxValue = 2, Step = 1)]
         public int sb1 { get; set; }
 
-        [Parameter("SB2", Group = "Strategy Buy (Compra = 1, Vendi = 2)", DefaultValue = 0, MinValue = 0, MaxValue = 2, Step = 1)]
+        [Parameter("SB2", Group = "Strategy Buy (Compra = 1, Vendi = 2)", DefaultValue = 1, MinValue = 0, MaxValue = 2, Step = 1)]
         public int sb2 { get; set; }
 
-        [Parameter("SB3", Group = "Strategy Buy (Compra = 1, Vendi = 2)", DefaultValue = 0, MinValue = 1, MaxValue = 2, Step = 1)]
+        [Parameter("SB3", Group = "Strategy Buy (Compra = 1, Vendi = 2)", DefaultValue = 1, MinValue = 1, MaxValue = 2, Step = 1)]
         public int sb3 { get; set; }
 
-        [Parameter("SB4", Group = "Strategy Buy (Compra = 1, Vendi = 2)", DefaultValue = 0, MinValue = 1, MaxValue = 2, Step = 1)]
+        [Parameter("SB4", Group = "Strategy Buy (Compra = 1, Vendi = 2)", DefaultValue = 1, MinValue = 1, MaxValue = 2, Step = 1)]
         public int sb4 { get; set; }
 
-        [Parameter("SS1", Group = "Strategy Sell (Compra = 1, Vendi = 2)", DefaultValue = 0, MinValue = 1, MaxValue = 2, Step = 1)]
+        [Parameter("SS1", Group = "Strategy Sell (Compra = 1, Vendi = 2)", DefaultValue = 2, MinValue = 1, MaxValue = 2, Step = 1)]
         public int ss1 { get; set; }
 
-        [Parameter("SS2", Group = "Strategy Sell (Compra = 1, Vendi = 2)", DefaultValue = 0, MinValue = 1, MaxValue = 2, Step = 1)]
+        [Parameter("SS2", Group = "Strategy Sell (Compra = 1, Vendi = 2)", DefaultValue = 2, MinValue = 1, MaxValue = 2, Step = 1)]
         public int ss2 { get; set; }
 
-        [Parameter("SS3", Group = "Strategy Sell (Compra = 1, Vendi = 2)", DefaultValue = 0, MinValue = 1, MaxValue = 2, Step = 1)]
+        [Parameter("SS3", Group = "Strategy Sell (Compra = 1, Vendi = 2)", DefaultValue = 2, MinValue = 1, MaxValue = 2, Step = 1)]
         public int ss3 { get; set; }
 
-        [Parameter("SS4", Group = "Strategy Sell (Compra = 1, Vendi = 2)", DefaultValue = 0, MinValue = 1, MaxValue = 2, Step = 1)]
+        [Parameter("SS4", Group = "Strategy Sell (Compra = 1, Vendi = 2)", DefaultValue = 2, MinValue = 1, MaxValue = 2, Step = 1)]
         public int ss4 { get; set; }
 
-        [Parameter("B1", Group = "Strategy (Positions back candle Buy)", DefaultValue = 0, MinValue = 0, Step = 1)]
+        [Parameter("B1", Group = "Strategy (Positions back candle Buy)", DefaultValue = 1, MinValue = 1, Step = 1)]
         public int b1 { get; set; }
 
-        [Parameter("B2", Group = "Strategy (Positions back candle Buy)", DefaultValue = 0, MinValue = 0, Step = 1)]
+        [Parameter("B2", Group = "Strategy (Positions back candle Buy)", DefaultValue = 2, MinValue = 2, Step = 1)]
         public int b2 { get; set; }
 
-        [Parameter("B3", Group = "Strategy (Positions back candle Buy)", DefaultValue = 0, MinValue = 0, Step = 1)]
+        [Parameter("B3", Group = "Strategy (Positions back candle Buy)", DefaultValue = 24, MinValue = 3, Step = 1)]
         public int b3 { get; set; }
 
-        [Parameter("B4", Group = "Strategy (Positions back candle Buy)", DefaultValue = 0, MinValue = 0, Step = 1)]
+        [Parameter("B4", Group = "Strategy (Positions back candle Buy)", DefaultValue = 48, MinValue = 4, Step = 1)]
         public int b4 { get; set; }
         
-        [Parameter("S1", Group = "Strategy (Positions back candle Sell)", DefaultValue = 0, MinValue = 0, Step = 1)]
+        [Parameter("S1", Group = "Strategy (Positions back candle Sell)", DefaultValue = 1, MinValue = 1, Step = 1)]
         public int s1 { get; set; }
         
-        [Parameter("S2", Group = "Strategy (Positions back candle Sell)", DefaultValue = 0, MinValue = 0, Step = 1)]
+        [Parameter("S2", Group = "Strategy (Positions back candle Sell)", DefaultValue = 2, MinValue = 2, Step = 1)]
         public int s2 { get; set; }
         
-        [Parameter("S3", Group = "Strategy (Positions back candle Sell)", DefaultValue = 0, MinValue = 0, Step = 1)]
+        [Parameter("S3", Group = "Strategy (Positions back candle Sell)", DefaultValue = 24, MinValue = 3, Step = 1)]
         public int s3 { get; set; }
         
-        [Parameter("S4", Group = "Strategy (Positions back candle Sell)", DefaultValue = 0, MinValue = 0, Step = 1)]
+        [Parameter("S4", Group = "Strategy (Positions back candle Sell)", DefaultValue = 48, MinValue = 4, Step = 1)]
         public int s4 { get; set; }
         
         [Parameter("B1_minB", Group = "Strategy (min body candle Buy)", DefaultValue = 0, MinValue = 0, Step = 1)]
@@ -127,71 +124,80 @@ namespace cAlgo.Robots
         [Parameter("S2_minB", Group = "Strategy (min body candle Sell)", DefaultValue = 0, MinValue = 0, Step = 1)]
         public int minB_s2 { get; set; }
         
-        [Parameter("B1_maxB", Group = "Strategy (max body candle Buy)", DefaultValue = 1000, MinValue = 0, Step = 1)]
+        [Parameter("B1_maxB", Group = "Strategy (max body candle Buy)", DefaultValue = 1000, MinValue = 1, Step = 1)]
         public int maxB_b1 { get; set; }
         
-        [Parameter("B2_maxB", Group = "Strategy (max body candle Buy)", DefaultValue = 1000, MinValue = 0, Step = 1)]
+        [Parameter("B2_maxB", Group = "Strategy (max body candle Buy)", DefaultValue = 1000, MinValue = 1, Step = 1)]
         public int maxB_b2 { get; set; }
         
-        [Parameter("S1_maxB", Group = "Strategy (max body candle Sell)", DefaultValue = 1000, MinValue = 0, Step = 1)]
+        [Parameter("S1_maxB", Group = "Strategy (max body candle Sell)", DefaultValue = 1000, MinValue = 1, Step = 1)]
         public int maxB_s1 { get; set; }
         
-        [Parameter("S2_maxB", Group = "Strategy (max body candle Sell)", DefaultValue = 1000, MinValue = 0, Step = 1)]
+        [Parameter("S2_maxB", Group = "Strategy (max body candle Sell)", DefaultValue = 1000, MinValue = 1, Step = 1)]
         public int maxB_s2 { get; set; }                            
 
-        [Parameter("X1", Group = "Strategy Buy", DefaultValue = 0, MinValue = 0, Step = 1)]
+        [Parameter("X1", Group = "Strategy Buy (0 = disable)", DefaultValue = 0, MinValue = 0, Step = 1)]
         public int x1 { get; set; }
 
-        [Parameter("X2", Group = "Strategy Buy", DefaultValue = 0, MinValue = 0, Step = 1)]
+        [Parameter("X2", Group = "Strategy Buy (0 = disable)", DefaultValue = 0, MinValue = 0, Step = 1)]
         public int x2 { get; set; }
         
-        [Parameter("X3", Group = "Strategy Buy", DefaultValue = 0, MinValue = 0, Step = 1)]
+        [Parameter("X3", Group = "Strategy Buy (0 = disable)", DefaultValue = 0, MinValue = 0, Step = 1)]
         public int x3 { get; set; }
         
-        [Parameter("X4", Group = "Strategy Buy", DefaultValue = 0, MinValue = 0, Step = 1)]
+        [Parameter("X4", Group = "Strategy Buy (0 = disable)", DefaultValue = 0, MinValue = 0, Step = 1)]
         public int x4 { get; set; }
 
-        [Parameter("Y1", Group = "Strategy Sell", DefaultValue = 0, MinValue = 0, Step = 1)]
+        [Parameter("Y1", Group = "Strategy Sell (0 = disable)", DefaultValue = 0, MinValue = 0, Step = 1)]
         public int y1 { get; set; }
 
-        [Parameter("Y2", Group = "Strategy Sell", DefaultValue = 0, MinValue = 0, Step = 1)]
+        [Parameter("Y2", Group = "Strategy Sell (0 = disable)", DefaultValue = 0, MinValue = 0, Step = 1)]
         public int y2 { get; set; }
         
-        [Parameter("Y3", Group = "Strategy Sell", DefaultValue = 0, MinValue = 0, Step = 1)]
+        [Parameter("Y3", Group = "Strategy Sell (0 = disable)", DefaultValue = 0, MinValue = 0, Step = 1)]
         public int y3 { get; set; }
         
-        [Parameter("Y4", Group = "Strategy Sell", DefaultValue = 0, MinValue = 0, Step = 1)]
+        [Parameter("Y4", Group = "Strategy Sell (0 = disable)", DefaultValue = 0, MinValue = 0, Step = 1)]
         public int y4 { get; set; }
 
-        [Parameter("Enable", Group = "Strategy Time trading (Utc)", DefaultValue = false)]
+        [Parameter("Enable", Group = "Strategy to open on Time (Utc)", DefaultValue = false)]
         public bool enableTime { get; set; }
 
-        [Parameter("Opening hour", Group = "Strategy Time trading (Utc)", DefaultValue = 8, MinValue = 0, MaxValue = 23, Step = 1)]
+        [Parameter("Opening hour", Group = "Strategy to open on Time (Utc)", DefaultValue = 8, MinValue = 0, MaxValue = 23, Step = 1)]
         public int openHour { get; set; }
 
-        [Parameter("Close hour", Group = "Strategy Time trading (Utc)", DefaultValue = 20, MinValue = 0, MaxValue = 23, Step = 1)]
+        [Parameter("Close hour", Group = "Strategy to open on Time (Utc)", DefaultValue = 20, MinValue = 0, MaxValue = 23, Step = 1)]
         public int closeHour { get; set; }
 
-        [Parameter("Opening minute", Group = "Strategy Time trading (Utc)", DefaultValue = 0, MaxValue = 59, MinValue = 0, Step = 1)]
+        [Parameter("Opening minute", Group = "Strategy to open on Time (Utc)", DefaultValue = 0, MaxValue = 59, MinValue = 0, Step = 1)]
         public int openMinute { get; set; }
 
-        [Parameter("Closing minute", Group = "Strategy Time trading (Utc)", DefaultValue = 0, MinValue = 0, MaxValue = 59, Step = 1)]
+        [Parameter("Closing minute", Group = "Strategy to open on Time (Utc)", DefaultValue = 59, MinValue = 0, MaxValue = 59, Step = 1)]
         public int closeMinute { get; set; }
 
-        [Parameter("Exclude monday", Group = "Strategy Time trading (Utc)", DefaultValue = false)]
+        [Parameter("Exclude monday", Group = "Strategy Day (Utc)", DefaultValue = false)]
         public bool excludeMonday { get; set; }
 
-        [Parameter("Exclude tuesday", Group = "Strategy Time trading (Utc)", DefaultValue = false)]
+        [Parameter("Exclude tuesday", Group = "Strategy Day (Utc)", DefaultValue = false)]
         public bool excludeTuesday { get; set; }
 
-        [Parameter("Exclude wednesday", Group = "Strategy Time trading (Utc)", DefaultValue = false)]
+        [Parameter("Exclude wednesday", Group = "Strategy Day (Utc)", DefaultValue = false)]
         public bool excludeWednesday { get; set; }
 
-        [Parameter("Exclude thursday", Group = "Strategy Time trading (Utc)", DefaultValue = false)]
+        [Parameter("Exclude thursday", Group = "Strategy Day (Utc)", DefaultValue = false)]
         public bool excludeThursday { get; set; }
 
-        [Parameter("Exclude friday", Group = "Strategy Time trading (Utc)", DefaultValue = false)]
+        [Parameter("Exclude friday", Group = "Strategy Day (Utc)", DefaultValue = false)]
         public bool excludeFriday { get; set; }
+        
+        [Parameter("Enable", Group = "Strategy to force closing trade (Utc)", DefaultValue = false)]
+        public bool enableCloseForce { get; set; }
+        
+        [Parameter("Hour", Group = "Strategy to force closing trade (Utc)", DefaultValue = 22, MinValue = 0, MaxValue = 23, Step = 1)]
+        public int closeForceHour { get; set; }
+        
+        [Parameter("Force to close position daily", Group = "Strategy to force closing trade (Utc)", DefaultValue = false)]
+        public bool closePosition { get; set; }
 
         [Parameter("Send a Telegram", Group = "Telegram Notifications", DefaultValue = false)]
         public bool IncludeTelegram { get; set; }
@@ -246,8 +252,6 @@ namespace cAlgo.Robots
             //Init DateTime
             startDateTime = DateTime.Now;
             startDateTime_bot = DateTime.Parse(string_dateBot);
-            //telegram notification
-            //telegram = new Telegram();
 
             //number of trades done today
             reset_max_Trades();
@@ -359,12 +363,11 @@ namespace cAlgo.Robots
 
             triggerOpenBuy = general && statisticaBuy && minMaxBuy(x1,x2) && minMaxBuy(x3,x4);
             triggerOpenSell = general && statisticaSell && minMaxSell(y1,y2) && minMaxBuy(y3,y4);
-
-            executeOrder();
-      
             
-            //closePositionMinute(lastOpenPositionMinute + 10);
-            //closePositionHour(lastOpenPositionHour);                         
+            closePositionHour(closeForceHour); 
+            
+            executeOrder();
+                                                  
         }
 
         public async void SendTelegram(string telegramMessage)
@@ -413,19 +416,12 @@ namespace cAlgo.Robots
 
         internal void closePositionHour(int hour)
         {
-            if (Server.TimeInUtc.Hour == hour)
+            if ( enableCloseForce == true && Server.TimeInUtc.Hour == hour)
             {
                 CloseAllPositions();
             }
         }
 
-        internal void closePositionMinute(int minute)
-        {
-            if (Server.TimeInUtc.Minute == minute)
-            {
-                CloseAllPositions();
-            }
-        }
 
         internal bool volumeTick(int volume)
         {
