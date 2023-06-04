@@ -31,7 +31,7 @@ namespace cAlgo.Robots
         [Parameter("Max Spread", Group = "Protection (pips)", DefaultValue = 1, MinValue = 0, Step = 0.1)]
         public double maxSpread { get; set; }
         
-        [Parameter("Max volume tick", Group = "Protection (pips)", DefaultValue = 1, MinValue = 1, Step = 10)]
+        [Parameter("Max volume tick", Group = "Protection (pips)", DefaultValue = 0, MinValue = 0, Step = 10)]
         public int maxVolumeTick { get; set; }
 
         [Parameter("Enable", Group = "Protection Break-Even (pips)", DefaultValue = false)]
@@ -43,22 +43,25 @@ namespace cAlgo.Robots
         [Parameter("Break-Even Extra", Group = "Protection Break-Even (pips)", DefaultValue = 1, MinValue = 0, Step = 1)]
         public double BreakEvenExtraPips { get; set; }
 
-        [Parameter("Run on opening bar", Group = "Strategy", DefaultValue = false)]
+        [Parameter("Run on opening bar", Group = "Strategy", DefaultValue = true)]
         public bool On_bar { get; set; }
 
         [Parameter("Make new order immediately after lost", Group = "Strategy", DefaultValue = false)]
         public bool orderLost { get; set; }
 
-        [Parameter("Wait next candle to make order", Group = "Strategy", DefaultValue = false)]
+        [Parameter("Wait next candle to make order", Group = "Strategy", DefaultValue = true)]
         public bool nextCandle { get; set; }
 
-        [Parameter("Stop new trade when total daily profit > 0", Group = "Strategy", DefaultValue = false)]
+        [Parameter("Stop new trade when total daily profit > 0", Group = "Strategy", DefaultValue = true)]
         public bool StopWhenWin { get; set; }
+        
+        [Parameter("Force to close position daily", Group = "Strategy", DefaultValue = true)]
+        public bool closePosition { get; set; }
 
-        [Parameter("Max trades in a day", Group = "Strategy", DefaultValue = 1, MinValue = 1, Step = 1)]
+        [Parameter("Max trades in a day", Group = "Strategy", DefaultValue = 2, MinValue = 1, Step = 1)]
         public int maxTrades { get; set; }
 
-        [Parameter("Enable", Group = "Strategy (Martingala)", DefaultValue = false)]
+        [Parameter("Enable", Group = "Strategy (Martingala)", DefaultValue = true)]
         public bool Martingala { get; set; }
 
         [Parameter("Lot adding", Group = "Strategy (Martingala)", DefaultValue = 0.1, MinValue = 0, Step = 0.1)]
@@ -67,7 +70,7 @@ namespace cAlgo.Robots
         [Parameter("SB1", Group = "Strategy Buy (Compra = 1, Vendi = 2)", DefaultValue = 1, MinValue = 1, MaxValue = 2, Step = 1)]
         public int sb1 { get; set; }
 
-        [Parameter("SB2", Group = "Strategy Buy (Compra = 1, Vendi = 2)", DefaultValue = 1, MinValue = 0, MaxValue = 2, Step = 1)]
+        [Parameter("SB2", Group = "Strategy Buy (Compra = 1, Vendi = 2)", DefaultValue = 1, MinValue = 1, MaxValue = 2, Step = 1)]
         public int sb2 { get; set; }
 
         [Parameter("SB3", Group = "Strategy Buy (Compra = 1, Vendi = 2)", DefaultValue = 1, MinValue = 1, MaxValue = 2, Step = 1)]
@@ -160,19 +163,19 @@ namespace cAlgo.Robots
         [Parameter("Y4", Group = "Strategy Sell (0 = disable)", DefaultValue = 0, MinValue = 0, Step = 1)]
         public int y4 { get; set; }
 
-        [Parameter("Enable", Group = "Strategy to open on Time (Utc)", DefaultValue = false)]
+        [Parameter("Enable", Group = "Strategy to open on Time (Utc)", DefaultValue = true)]
         public bool enableTime { get; set; }
 
-        [Parameter("Opening hour", Group = "Strategy to open on Time (Utc)", DefaultValue = 8, MinValue = 0, MaxValue = 23, Step = 1)]
+        [Parameter("Opening hour", Group = "Strategy to open on Time (Utc)", DefaultValue = 15, MinValue = 0, MaxValue = 23, Step = 1)]
         public int openHour { get; set; }
 
-        [Parameter("Close hour", Group = "Strategy to open on Time (Utc)", DefaultValue = 20, MinValue = 0, MaxValue = 23, Step = 1)]
+        [Parameter("Close hour", Group = "Strategy to open on Time (Utc)", DefaultValue = 18, MinValue = 0, MaxValue = 23, Step = 1)]
         public int closeHour { get; set; }
 
         [Parameter("Opening minute", Group = "Strategy to open on Time (Utc)", DefaultValue = 0, MaxValue = 59, MinValue = 0, Step = 1)]
         public int openMinute { get; set; }
 
-        [Parameter("Closing minute", Group = "Strategy to open on Time (Utc)", DefaultValue = 59, MinValue = 0, MaxValue = 59, Step = 1)]
+        [Parameter("Closing minute", Group = "Strategy to open on Time (Utc)", DefaultValue = 59, MinValue = 1, MaxValue = 59, Step = 1)]
         public int closeMinute { get; set; }
 
         [Parameter("Exclude monday", Group = "Strategy Day (Utc)", DefaultValue = false)]
@@ -195,9 +198,6 @@ namespace cAlgo.Robots
         
         [Parameter("Hour", Group = "Strategy to force closing trade (Utc)", DefaultValue = 22, MinValue = 0, MaxValue = 23, Step = 1)]
         public int closeForceHour { get; set; }
-        
-        [Parameter("Force to close position daily", Group = "Strategy to force closing trade (Utc)", DefaultValue = false)]
-        public bool closePosition { get; set; }
 
         [Parameter("Send a Telegram", Group = "Telegram Notifications", DefaultValue = false)]
         public bool IncludeTelegram { get; set; }
