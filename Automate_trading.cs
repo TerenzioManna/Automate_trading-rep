@@ -28,7 +28,7 @@ namespace cAlgo.Robots
         [Parameter("Stop Loss", Group = "Protection (pips)", DefaultValue = 50, MinValue = 0, Step = 1)]
         public double StopLossInPips { get; set; }
 
-        [Parameter("Max Spread", Group = "Protection (pips)", DefaultValue = 1, MinValue = 0, Step = 0.1)]
+        [Parameter("Max Spread", Group = "Protection (pips)", DefaultValue = 1000, MinValue = 0, Step = 0.1)]
         public double maxSpread { get; set; }
         
         [Parameter("Max volume tick", Group = "Protection (pips)", DefaultValue = 0, MinValue = 0, Step = 10)]
@@ -127,16 +127,16 @@ namespace cAlgo.Robots
         [Parameter("S2_minB", Group = "Strategy (min body candle Sell)", DefaultValue = 0, MinValue = 0, Step = 1)]
         public int minB_s2 { get; set; }
         
-        [Parameter("B1_maxB", Group = "Strategy (max body candle Buy)", DefaultValue = 1000, MinValue = 1, Step = 1)]
+        [Parameter("B1_maxB", Group = "Strategy (max body candle Buy)", DefaultValue = 1000, MinValue = 0, Step = 1)]
         public int maxB_b1 { get; set; }
         
-        [Parameter("B2_maxB", Group = "Strategy (max body candle Buy)", DefaultValue = 1000, MinValue = 1, Step = 1)]
+        [Parameter("B2_maxB", Group = "Strategy (max body candle Buy)", DefaultValue = 1000, MinValue = 0, Step = 1)]
         public int maxB_b2 { get; set; }
         
-        [Parameter("S1_maxB", Group = "Strategy (max body candle Sell)", DefaultValue = 1000, MinValue = 1, Step = 1)]
+        [Parameter("S1_maxB", Group = "Strategy (max body candle Sell)", DefaultValue = 1000, MinValue = 0, Step = 1)]
         public int maxB_s1 { get; set; }
         
-        [Parameter("S2_maxB", Group = "Strategy (max body candle Sell)", DefaultValue = 1000, MinValue = 1, Step = 1)]
+        [Parameter("S2_maxB", Group = "Strategy (max body candle Sell)", DefaultValue = 1000, MinValue = 0, Step = 1)]
         public int maxB_s2 { get; set; }                            
 
         [Parameter("X1", Group = "Strategy Buy (0 = disable)", DefaultValue = 0, MinValue = 0, Step = 1)]
