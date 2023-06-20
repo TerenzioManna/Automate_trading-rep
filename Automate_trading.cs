@@ -210,7 +210,7 @@ namespace cAlgo.Robots
 
         //msg allert telegram        
         string text0, text1, text2, text3, text4, text5, text_close;
-        string text00, text10, text20, text30, text40, text50, text_open;
+        string text00, text10, text20, text30, text40, text50, text60, text70, text_open;
 
         internal bool triggerOpenBuy = false, triggerOpenSell = false, triggerCloseBuy = false, triggerCloseSell = false;
 
@@ -288,18 +288,20 @@ namespace cAlgo.Robots
         {
             var position = args.Position;
 
-            double giornaliero = History.Where(x => x.ClosingTime.Date == Time.Date).Sum(x => x.NetProfit);
-            double totale = History.Where(x => x.ClosingTime.Date <= startDateTime_bot).Sum(x => x.NetProfit);
-
-            Print("Trade numero: {0} Commissione : {1}  Profitto : {2} Profitto giornaliero : {3} Profitto totale : {4}", trades, Math.Round(position.Commissions, 2), position.NetProfit, giornaliero, totale);
-
-            text00 = "Chiusura posizione: " + trades + "\r\n";
-            text10 = "Commissione: " + Math.Round(position.Commissions, 1) + "\r\n";
-            text20 = "Profitto: " + position.NetProfit + "\r\n";
-            text30 = "Profitto giornaliero: " + Math.Round(giornaliero,1) + "\r\n";
-            text40 = "Profitto totale: " + Math.Round(totale,1);
-            text50 = "";
-            text_close = text0 + text00 + text10 + text20 + text30 + text40 + text50;
+            double giornaliero = History.Where(x => x.ClosingTime.Date == Time.Date && x.SymbolName == this.SymbolName).Sum(x => x.NetProfit);
+            double totale = History.Where(x => x.ClosingTime.Date <= startDateTime_bot && x.SymbolName == this.SymbolName).Sum(x => x.NetProfit);
+            
+            Print("Trade numero: {0} Commissione : {1}  Profitto : {2} Profitto giornaliero : {3} Profitto totale : {4} Margine : {5} Margine % : {6} Bilancio : {7}", trades, Math.Round(position.Commissions, 2), Math.Round(position.NetProfit,1), Math.Round(giornaliero,1), Math.Round(totale,1), Math.Round(position.Margin, 1), Math.Round(Account.Balance, 1), Account.MarginLevel);
+            
+            text00 = "Chiusura posizione num: " + trades + "\r\n";
+            text10 = "Commissione: " + Math.Round(position.Commissions, 1) + "€" + "\r\n";
+            text20 = "Profitto: " + Math.Round(position.NetProfit,1) + "€" + "\r\n";
+            text30 = "Profitto giornaliero: " + Math.Round(giornaliero,1) + "€" + "\r\n";
+            text40 = "Profitto totale: " + Math.Round(totale,1) + "€" + "\r\n";
+            text50 = "Margine: " + Math.Round(position.Margin, 1) + "€" + "\r\n";
+            text60 = "Margine disp. " + Account.FreeMargin + "\r\n";
+            text70 = "Bilancio: " + Math.Round(Account.Balance, 1) + "€";            
+            text_close = text0 + text00 + text10 + text20 + text30 + text40 + text50 + text60 + text70;
 
             if (IncludeTelegram == true)
             {
@@ -730,17 +732,17 @@ namespace cAlgo.Robots
                 positionClosed = false;
 
                 text0 = "<b>" + InstanceName + "</b>" + "\r\n";
-                text1 = typePosition + " posizione " + trades + ": " + "\r\n";
+                text1 = typePosition + " posizione num: " + trades + "\r\n";
                 text2 = "Volume: " + volume + "\r\n";
                 text3 = "Take profit: " + takeProfit + "\r\n";
                 text4 = "Stop loss: " + stopLoss + "\r\n";
-                text5 = "";
+                text5 = "Margine disp. " + Account.FreeMargin;
                 text_open = text0 + text1 + text2 + text3 + text4 + text5;
 
                 if (IncludeTelegram == true)
                 {
                     SendTelegram(text_open);
-                }
+                }             
             }
         }
 
