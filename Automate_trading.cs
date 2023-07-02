@@ -260,6 +260,11 @@ namespace cAlgo.Robots
             //Telegram security protocol
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            
+            if (IncludeTelegram == true)
+            {
+                SendTelegram("BOT AVVIATO");
+            }
         }
 
         protected override void OnTick()
