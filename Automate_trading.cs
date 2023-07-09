@@ -18,6 +18,9 @@ namespace cAlgo.Robots
 
         [Parameter("Data avvio", Group = "General", DefaultValue = "2023-05-31 00:00:00")]
         public string string_dateBot { get; set; }
+        
+        [Parameter("Bilancio iniziale €", Group = "General", DefaultValue = 5000)]
+        public int bilancioIniziale { get; set; }
 
         [Parameter("Lot Size", Group = "Volume", DefaultValue = 0.5, MinValue = 0.01, Step = 0.01)]
         public double LotSize { get; set; }
@@ -60,6 +63,12 @@ namespace cAlgo.Robots
 
         [Parameter("Max trades in a day", Group = "Strategy", DefaultValue = 2, MinValue = 1, Step = 1)]
         public int maxTrades { get; set; }
+        
+        [Parameter("Enable", Group = "Strategy (Anchor)", DefaultValue = false)]
+        public bool enableAnchor { get; set; }   
+        
+        [Parameter("Number of bars back", Group = "Strategy (Anchor)", DefaultValue = 8)]
+        public int indexAnchor { get; set; }       
 
         [Parameter("Enable", Group = "Strategy (Martingala)", DefaultValue = true)]
         public bool Martingala { get; set; }
@@ -210,7 +219,7 @@ namespace cAlgo.Robots
 
         //msg allert telegram        
         string text0, text1, text2, text3, text4, text5, text_close;
-        string text00, text10, text20, text30, text40, text50, text60, text70, text_open;
+        string text00, text10, text20, text30, text40, text50, text60, text70, text80, text_open;
 
         internal bool triggerOpenBuy = false, triggerOpenSell = false, triggerCloseBuy = false, triggerCloseSell = false;
 
@@ -243,9 +252,13 @@ namespace cAlgo.Robots
         internal int lastCandle = 0;
 
         internal int lotMoltip = 2;
-
+        
+        private AnchoredVWAPExperto anchor;
+        
         protected override void OnStart()
-        {
+        {   
+            anchor = Indicators.GetIndicator<AnchoredVWAPExperto>(indexAnchor);
+                
             //public event Action Closed
             Positions.Closed += PositionsOnClosed;
 
@@ -283,6 +296,7 @@ namespace cAlgo.Robots
                 PositionManagement();
                 BreakEvenAdjustment();
             }
+
         }
 
         private void Timer_TimerTick()
@@ -295,18 +309,23 @@ namespace cAlgo.Robots
 
             double giornaliero = History.Where(x => x.ClosingTime.Date == Time.Date && x.SymbolName == this.SymbolName).Sum(x => x.NetProfit);
             double totale = History.Where(x => x.ClosingTime.Date <= startDateTime_bot && x.SymbolName == this.SymbolName).Sum(x => x.NetProfit);
+            double totaleAll = History.Where(x => x.ClosingTime.Date <= startDateTime_bot).Sum(x => x.NetProfit);
             
-            Print("Trade numero: {0} Commissione : {1}  Profitto : {2} Profitto giornaliero : {3} Profitto totale : {4} Margine : {5} Margine % : {6} Bilancio : {7}", trades, Math.Round(position.Commissions, 2), Math.Round(position.NetProfit,1), Math.Round(giornaliero,1), Math.Round(totale,1), Math.Round(position.Margin, 1), Math.Round(Account.Balance, 1), Account.MarginLevel);
+            //Print("Trade numero: {0} Commissione : {1}  Profitto : {2} Profitto giornaliero : {3} Profitto totale : {4} Margine : {5} Margine disp : {6} Bilancio : {7}", trades, Math.Round(position.Commissions, 2), Math.Round(position.NetProfit,1), Math.Round(giornaliero,1), Math.Round(totale,1), Math.Round(position.Margin, 1), Account.FreeMargin, Math.Round(Account.Balance, 1));
             
             text00 = "Chiusura posizione num: " + trades + "\r\n";
-            text10 = "Commissione: " + Math.Round(position.Commissions, 1) + "€" + "\r\n";
-            text20 = "Profitto: " + Math.Round(position.NetProfit,1) + "€" + "\r\n";
-            text30 = "Profitto giornaliero: " + Math.Round(giornaliero,1) + "€" + "\r\n";
-            text40 = "Profitto totale: " + Math.Round(totale,1) + "€" + "\r\n";
-            text50 = "Margine: " + Math.Round(position.Margin, 1) + "€" + "\r\n";
-            text60 = "Margine disp. " + Account.FreeMargin + "\r\n";
-            text70 = "Bilancio: " + Math.Round(Account.Balance, 1) + "€";            
-            text_close = text0 + text00 + text10 + text20 + text30 + text40 + text50 + text60 + text70;
+            text10 = "Commissione: " + Math.Round(position.Commissions,0) + "€" + "\r\n";
+            text20 = "Profitto: " + Math.Round(position.NetProfit,0) + "€" + "\r\n";
+            text30 = "Profitto giornaliero: " + Math.Round(giornaliero,0) + "€" + "\r\n";
+            text40 = "Profitto all bot: " + Math.Round(totale,0) + "€" + "\r\n";
+            text50 = "Margine disp. " + Math.Round(Account.FreeMargin,0) + "\r\n";
+            text60 = "Bilancio: " + Math.Round(Account.Balance,0) + "€" + "\r\n";
+            text70 = "Gain %: " +  Math.Round((totale/bilancioIniziale)*100,0) + "\r\n";
+            text80 = "Gain % all bot" +  Math.Round((totaleAll/bilancioIniziale)*100,0);
+            
+            text_close = text0 + text00 + text10 + text20 + text30 + text40 + text50 + text60 + text70 + text80;
+            
+            Print (text_close);
 
             if (IncludeTelegram == true)
             {
@@ -368,14 +387,49 @@ namespace cAlgo.Robots
             statisticaBuy = GR(sb1, b1, minB_b1, maxB_b1) && GR(sb2, b2, minB_b2, maxB_b2) && GR(sb3, b3) && GR(sb4, b4);
             statisticaSell = GR(ss1, s1, minB_s1, maxB_s1) && GR(ss2, s2, minB_s2, maxB_s2) && GR(ss3, s3) && GR(ss4, s4);
 
-            triggerOpenBuy = general && statisticaBuy && minMaxBuy(x1,x2) && minMaxBuy(x3,x4);
-            triggerOpenSell = general && statisticaSell && minMaxSell(y1,y2) && minMaxBuy(y3,y4);
+            triggerOpenBuy = general && statisticaBuy && minMaxBuy(x1,x2) && minMaxBuy(x3,x4) && anchorBuy(enableAnchor);
+            triggerOpenSell = general && statisticaSell && minMaxSell(y1,y2) && minMaxBuy(y3,y4) && anchorSell(enableAnchor);            
             
             closePositionHour(closeForceHour); 
             
             executeOrder();
-                                                  
+            
         }
+        
+        internal bool anchorBuy(bool enable)
+        {   
+            if (enable == true)
+            {
+                if ((Bars.Last(0).Open >  anchor.Result.LastValue))
+                {
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        
+        internal bool anchorSell(bool enable)
+        {   
+            if (enable == true)
+            {
+                if ((Bars.Last(0).Open <  anchor.Result.LastValue))
+                {
+                    return true;
+                }
+                else
+                    return false;
+             }
+             else
+              {
+                return true;
+            }
+        }
+        
 
         public async void SendTelegram(string telegramMessage)
         {

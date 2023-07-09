@@ -1,0 +1,9 @@
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\bin\Release\Anchored VWAP Experto.dll
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\bin\Release\Anchored VWAP Experto.pdb
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\bin\Release\cAlgo.API.dll
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\bin\Release\cAlgo.API.xml
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\obj\Release\Anchored VWAP Experto.csproj.AssemblyReference.cache
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\obj\Release\Anchored VWAP Experto.csproj.CoreCompileInputs.cache
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\obj\Release\Anchored VWAP Experto.csproj.CopyComplete
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\obj\Release\Anchored VWAP Experto.dll
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\obj\Release\Anchored VWAP Experto.pdb
