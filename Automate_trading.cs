@@ -33,7 +33,7 @@ namespace cAlgo.Robots
 
         [Parameter("Max Spread", Group = "Protection (pips)", DefaultValue = 1000, MinValue = 0, Step = 0.1)]
         public double maxSpread { get; set; }
-        
+        /*
         [Parameter("Max volume tick", Group = "Protection (pips)", DefaultValue = 0, MinValue = 0, Step = 10)]
         public int maxVolumeTick { get; set; }
 
@@ -45,7 +45,7 @@ namespace cAlgo.Robots
 
         [Parameter("Break-Even Extra", Group = "Protection Break-Even (pips)", DefaultValue = 1, MinValue = 0, Step = 1)]
         public double BreakEvenExtraPips { get; set; }
-
+        */
         [Parameter("Run on opening bar", Group = "Strategy", DefaultValue = true)]
         public bool On_bar { get; set; }
 
@@ -70,7 +70,7 @@ namespace cAlgo.Robots
         [Parameter("Number of bars back", Group = "Strategy (Anchor)", DefaultValue = 8)]
         public int indexAnchor { get; set; }       
 
-        [Parameter("Enable", Group = "Strategy (Martingala)", DefaultValue = true)]
+        [Parameter("Enable", Group = "Strategy (Martingala)", DefaultValue = false)]
         public bool Martingala { get; set; }
 
         [Parameter("Lot adding", Group = "Strategy (Martingala)", DefaultValue = 0.1, MinValue = 0, Step = 0.1)]
@@ -135,7 +135,7 @@ namespace cAlgo.Robots
         
         [Parameter("S2_minB", Group = "Strategy (min body candle Sell)", DefaultValue = 0, MinValue = 0, Step = 1)]
         public int minB_s2 { get; set; }
-        
+        /*
         [Parameter("B1_maxB", Group = "Strategy (max body candle Buy)", DefaultValue = 1000, MinValue = 0, Step = 1)]
         public int maxB_b1 { get; set; }
         
@@ -147,7 +147,7 @@ namespace cAlgo.Robots
         
         [Parameter("S2_maxB", Group = "Strategy (max body candle Sell)", DefaultValue = 1000, MinValue = 0, Step = 1)]
         public int maxB_s2 { get; set; }                            
-
+        
         [Parameter("X1", Group = "Strategy Buy (0 = disable)", DefaultValue = 0, MinValue = 0, Step = 1)]
         public int x1 { get; set; }
 
@@ -171,7 +171,7 @@ namespace cAlgo.Robots
         
         [Parameter("Y4", Group = "Strategy Sell (0 = disable)", DefaultValue = 0, MinValue = 0, Step = 1)]
         public int y4 { get; set; }
-
+        */
         [Parameter("Enable", Group = "Strategy to open on Time (Utc)", DefaultValue = true)]
         public bool enableTime { get; set; }
 
@@ -186,7 +186,7 @@ namespace cAlgo.Robots
 
         [Parameter("Closing minute", Group = "Strategy to open on Time (Utc)", DefaultValue = 59, MinValue = 1, MaxValue = 59, Step = 1)]
         public int closeMinute { get; set; }
-
+        /*
         [Parameter("Exclude monday", Group = "Strategy Day (Utc)", DefaultValue = false)]
         public bool excludeMonday { get; set; }
 
@@ -201,6 +201,7 @@ namespace cAlgo.Robots
 
         [Parameter("Exclude friday", Group = "Strategy Day (Utc)", DefaultValue = false)]
         public bool excludeFriday { get; set; }
+        */
         
         [Parameter("Enable", Group = "Strategy to force closing trade (Utc)", DefaultValue = false)]
         public bool enableCloseForce { get; set; }
@@ -210,13 +211,13 @@ namespace cAlgo.Robots
 
         [Parameter("Send a Telegram", Group = "Telegram Notifications", DefaultValue = false)]
         public bool IncludeTelegram { get; set; }
-
+        
         [Parameter("Bot Token", Group = "Telegram Notifications", DefaultValue = "5261129940:AAFKZoXMGYjUBmtmsdIGbuKOCA0jEvwWQSk")]
         public string BotToken { get; set; }
 
         [Parameter("Chat ID", Group = "Telegram Notifications", DefaultValue = "-1001559045628")]
         public string ChatID { get; set; }
-
+        
         //msg allert telegram        
         string text0, text1, text2, text3, text4, text5, text_close;
         string text00, text10, text20, text30, text40, text50, text60, text70, text80, text_open;
@@ -285,7 +286,7 @@ namespace cAlgo.Robots
             if (On_bar == false)
             {
                 PositionManagement();
-                BreakEvenAdjustment();
+                //BreakEvenAdjustment();
             }
         }
 
@@ -294,7 +295,7 @@ namespace cAlgo.Robots
             if (On_bar == true)
             {
                 PositionManagement();
-                BreakEvenAdjustment();
+                //BreakEvenAdjustment();
             }
 
         }
@@ -382,18 +383,19 @@ namespace cAlgo.Robots
         {
 
             general = max_Trades_Day() && timeTrading() && !isOpenAPosition() && spread()
-            && dayTrading() && sameCandle() && volumeTick(maxVolumeTick);
+            && sameCandle(); //     && dayTrading()   && volumeTick(maxVolumeTick)
 
-            statisticaBuy = GR(sb1, b1, minB_b1, maxB_b1) && GR(sb2, b2, minB_b2, maxB_b2) && GR(sb3, b3) && GR(sb4, b4);
-            statisticaSell = GR(ss1, s1, minB_s1, maxB_s1) && GR(ss2, s2, minB_s2, maxB_s2) && GR(ss3, s3) && GR(ss4, s4);
+            statisticaBuy = GR(sb1, b1, minB_b1) && GR(sb2, b2, minB_b2) && GR(sb3, b3) && GR(sb4, b4); //maxB_b1   //maxB_b2
+            statisticaSell = GR(ss1, s1, minB_s1) && GR(ss2, s2, minB_s2) && GR(ss3, s3) && GR(ss4, s4); //maxB_s1   //maxB_s2
 
-            triggerOpenBuy = general && statisticaBuy && minMaxBuy(x1,x2) && minMaxBuy(x3,x4) && anchorBuy(enableAnchor);
-            triggerOpenSell = general && statisticaSell && minMaxSell(y1,y2) && minMaxBuy(y3,y4) && anchorSell(enableAnchor);            
+            triggerOpenBuy  = general && statisticaBuy  && anchorBuy(enableAnchor);          //&& minMaxBuy(x1,x2) && minMaxBuy(x3,x4)
+            triggerOpenSell = general && statisticaSell && anchorSell(enableAnchor);         //&& minMaxSell(y1,y2) && minMaxBuy(y3,y4) 
             
             closePositionHour(closeForceHour); 
             
             executeOrder();
-            
+
+
         }
         
         internal bool anchorBuy(bool enable)
@@ -525,7 +527,8 @@ namespace cAlgo.Robots
             else
                 return true;
         }
-
+        
+        /*
         bool dayTrading()
         {
             if (excludeMonday == true && Server.TimeInUtc.DayOfWeek == DayOfWeek.Monday)
@@ -553,7 +556,8 @@ namespace cAlgo.Robots
             else
                 return true;
         }
-
+        
+        */
         internal bool max_Trades_Day()
         {
             reset_max_Trades();
@@ -601,7 +605,7 @@ namespace cAlgo.Robots
         //L'indice relativo a 24ore prima
         //int g = Bars.OpenTimes.GetIndexByTime(Server.TimeInUtc.AddDays(-1));
 
-        private bool Gi(int index, double MinBody = 0, double maxBody = 1000, double upperMinShadow = 0, double upperMaxShadow = 1000, double lowerMinShadow = 0, double lowerMaxShadow = 1000)
+        private bool Gi(int index, double MinBody = 0, double maxBody = 100000, double upperMinShadow = 0, double upperMaxShadow = 100000, double lowerMinShadow = 0, double lowerMaxShadow = 100000)
         {
             bool aa = Bars.OpenPrices[index] < Bars.ClosePrices[index];
             bool a = ((Bars.ClosePrices[index] - Bars.OpenPrices[index]) / Symbol.PipSize) >= MinBody;
@@ -617,7 +621,7 @@ namespace cAlgo.Robots
                 return false;
         }
 
-        private bool Ri(int index, double MinBody = 0, double maxBody = 1000, double upperMinShadow = 0, double upperMaxShadow = 1000, double lowerMinShadow = 0, double lowerMaxShadow = 1000)
+        private bool Ri(int index, double MinBody = 0, double maxBody = 100000, double upperMinShadow = 0, double upperMaxShadow = 100000, double lowerMinShadow = 0, double lowerMaxShadow = 100000)
         {
             bool aa = Bars.OpenPrices[index] > Bars.ClosePrices[index];
             bool a = ((Bars.OpenPrices[index] - Bars.ClosePrices[index]) / Symbol.PipSize) >= MinBody;
@@ -831,7 +835,7 @@ namespace cAlgo.Robots
             }
             return false;
         }
-
+        /*
         private void BreakEvenAdjustment()
         {
             if (Enable_breakEven == false)
@@ -880,5 +884,8 @@ namespace cAlgo.Robots
                 }
             }
         }
+        
+        */
+        
     }
 }
