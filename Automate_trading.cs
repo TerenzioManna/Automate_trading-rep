@@ -36,16 +36,16 @@ namespace cAlgo.Robots
         /*
         [Parameter("Max volume tick", Group = "Protection (pips)", DefaultValue = 0, MinValue = 0, Step = 10)]
         public int maxVolumeTick { get; set; }
-
+         */
         [Parameter("Enable", Group = "Protection Break-Even (pips)", DefaultValue = false)]
         public bool Enable_breakEven { get; set; }
 
-        [Parameter("Break-Even Trigger", Group = "Protection Break-Even (pips)", DefaultValue = 1, MinValue = 0, Step = 1)]
+        [Parameter("Trigger (must be > Minimum)", Group = "Protection Break-Even (pips)", DefaultValue = 10, MinValue = 0, Step = 1)]
         public double BreakEvenPips { get; set; }
 
-        [Parameter("Break-Even Extra", Group = "Protection Break-Even (pips)", DefaultValue = 1, MinValue = 0, Step = 1)]
+        [Parameter("Minimum", Group = "Protection Break-Even (pips)", DefaultValue = 5, MinValue = 0, Step = 1)]
         public double BreakEvenExtraPips { get; set; }
-        */
+       
         [Parameter("Run on opening bar", Group = "Strategy", DefaultValue = true)]
         public bool On_bar { get; set; }
 
@@ -56,7 +56,7 @@ namespace cAlgo.Robots
         public bool nextCandle { get; set; }
 
         [Parameter("Stop new trade when total daily profit > 0", Group = "Strategy", DefaultValue = true)]
-        public bool StopWhenWin { get; set; }
+        public bool StopWhenWin { get; set; }       
         
         [Parameter("Force to close position daily", Group = "Strategy", DefaultValue = true)]
         public bool closePosition { get; set; }
@@ -64,17 +64,32 @@ namespace cAlgo.Robots
         [Parameter("Max trades in a day", Group = "Strategy", DefaultValue = 2, MinValue = 1, Step = 1)]
         public int maxTrades { get; set; }
         
-        [Parameter("Enable", Group = "Strategy (Anchor)", DefaultValue = false)]
-        public bool enableAnchor { get; set; }   
+        [Parameter("If profit is negative, close after hours", Group = "Strategy - ForceClose", DefaultValue = false)]
+        public bool EnableHourToClose { get; set; }
         
-        [Parameter("Number of bars back", Group = "Strategy (Anchor)", DefaultValue = 8)]
-        public int indexAnchor { get; set; }       
+        [Parameter("Hours before close position", Group = "Strategy - ForceClose", DefaultValue = 4)]
+        public int hourToClose { get; set; }
+        
+        [Parameter("Enable", Group = "Strategy (Anchor)", DefaultValue = false)]
+        public bool enableAnchor { get; set; }
+        
+        [Parameter("Invert direction", Group = "Strategy (Anchor)", DefaultValue = false)]
+        public bool invertAnchor { get; set; } 
+        
+        [Parameter("Number of bars back", Group = "Strategy (Anchor)", DefaultValue = 10)]
+        public int indexAnchor { get; set; }
+        
+        [Parameter("Distance pips from price", Group = "Strategy (Anchor)", DefaultValue = 0, Step = 0.1)]
+        public double distanceAnchor { get; set; }        
 
         [Parameter("Enable", Group = "Strategy (Martingala)", DefaultValue = false)]
         public bool Martingala { get; set; }
 
         [Parameter("Lot adding", Group = "Strategy (Martingala)", DefaultValue = 0.1, MinValue = 0, Step = 0.1)]
         public double lotAdding { get; set; }
+        
+        [Parameter("Pips to add", Group = "Strategy (Martingala)", DefaultValue = 1, MinValue = 0, Step = 1)]
+        public double matingalaPipAdding { get; set; }
 
         [Parameter("SB1", Group = "Strategy Buy (Compra = 1, Vendi = 2)", DefaultValue = 1, MinValue = 1, MaxValue = 2, Step = 1)]
         public int sb1 { get; set; }
@@ -219,7 +234,7 @@ namespace cAlgo.Robots
         public string ChatID { get; set; }
         
         //msg allert telegram        
-        string text0, text1, text2, text3, text4, text5, text_close;
+        string text0, text1, text2, text3, text4, text5, text6, text_close;
         string text00, text10, text20, text30, text40, text50, text60, text70, text80, text_open;
 
         internal bool triggerOpenBuy = false, triggerOpenSell = false, triggerCloseBuy = false, triggerCloseSell = false;
@@ -256,6 +271,9 @@ namespace cAlgo.Robots
         
         private AnchoredVWAPExperto anchor;
         
+        internal bool breakEvenSetted = false;
+        internal double TP = 0;
+        
         protected override void OnStart()
         {   
             anchor = Indicators.GetIndicator<AnchoredVWAPExperto>(indexAnchor);
@@ -264,7 +282,7 @@ namespace cAlgo.Robots
             Positions.Closed += PositionsOnClosed;
 
             //Init DateTime
-            startDateTime = DateTime.Now;
+            startDateTime = Server.TimeInUtc;
             startDateTime_bot = DateTime.Parse(string_dateBot);
 
             //number of trades done today
@@ -286,8 +304,10 @@ namespace cAlgo.Robots
             if (On_bar == false)
             {
                 PositionManagement();
-                //BreakEvenAdjustment();
             }
+                BreakEvenAdjustment();
+                closeAfterHour(hourToClose);
+        
         }
 
         protected override void OnBar()
@@ -295,9 +315,8 @@ namespace cAlgo.Robots
             if (On_bar == true)
             {
                 PositionManagement();
-                //BreakEvenAdjustment();
             }
-
+        
         }
 
         private void Timer_TimerTick()
@@ -326,7 +345,7 @@ namespace cAlgo.Robots
             
             text_close = text0 + text00 + text10 + text20 + text30 + text40 + text50 + text60 + text70 + text80;
             
-            Print (text_close);
+            //Print (text_close);
 
             if (IncludeTelegram == true)
             {
@@ -335,6 +354,7 @@ namespace cAlgo.Robots
 
             positionClosed = true;
             lastCandle = Bars.Count;
+            breakEvenSetted = false;
 
             //MARTINGALA
             if (Martingala == true)
@@ -360,12 +380,11 @@ namespace cAlgo.Robots
 
             //APRI IMMEDIATAMENTE APPENA PERDI
             if (orderLost == true)
-            {
+            {                  
                 if (position.GrossProfit < 0 && max_Trades_Day())
-                {
-
+                {                    ;
                     if (position.TradeType == TradeType.Buy)
-                    {
+                    {   
                         OpenPosition(TradeType.Sell, positionLot);
                         return;
                     }
@@ -388,44 +407,86 @@ namespace cAlgo.Robots
             statisticaBuy = GR(sb1, b1, minB_b1) && GR(sb2, b2, minB_b2) && GR(sb3, b3) && GR(sb4, b4); //maxB_b1   //maxB_b2
             statisticaSell = GR(ss1, s1, minB_s1) && GR(ss2, s2, minB_s2) && GR(ss3, s3) && GR(ss4, s4); //maxB_s1   //maxB_s2
 
-            triggerOpenBuy  = general && statisticaBuy  && anchorBuy(enableAnchor);          //&& minMaxBuy(x1,x2) && minMaxBuy(x3,x4)
-            triggerOpenSell = general && statisticaSell && anchorSell(enableAnchor);         //&& minMaxSell(y1,y2) && minMaxBuy(y3,y4) 
-            
-            closePositionHour(closeForceHour); 
+            triggerOpenBuy  = general && statisticaBuy  && anchorBuy(enableAnchor, invertAnchor);          //&& minMaxBuy(x1,x2) && minMaxBuy(x3,x4)
+            triggerOpenSell = general && statisticaSell && anchorSell(enableAnchor,invertAnchor);         //&& minMaxSell(y1,y2) && minMaxBuy(y3,y4)            
             
             executeOrder();
+            
 
+            
+            
 
         }
         
-        internal bool anchorBuy(bool enable)
+        internal void closeAfterHour(int hour)
         {   
-            if (enable == true)
+            if (isOpenAPosition() && EnableHourToClose == true)
             {
-                if ((Bars.Last(0).Open >  anchor.Result.LastValue))
+                var pos = Positions.Find(InstanceName, this.SymbolName);
+                
+                if (((Server.TimeInUtc.Hour - pos.EntryTime.Hour) >= hour) && pos.NetProfit < 0)
                 {
-                    return true;
+                    CloseAllPositions();
+                    Print("ciao");
+                }
+            }
+        }
+        
+        
+        internal bool anchorBuy(bool enable, bool invert)
+        {   
+            double distance  = deltaPips(this.Symbol, Bars.Last(0).Open, anchor.Result.LastValue, true);
+
+            if ((enable == true) && (distance > distanceAnchor))
+            {   
+                bool a = (Bars.Last(0).Open > anchor.Result.LastValue);
+                if (a)
+                {   
+                    bool risultato = (invert == false) ?  true : false;
+                    return risultato;
                 }
                 else
-                    return false;
+                {
+                    bool risultato1 = (invert == false) ?  false : true;
+                    return risultato1;
+                }
             }
+            
+            if ((enable == true) && (distance <= distanceAnchor))
+            {
+                return false;
+            } 
+            
             else
             {
                 return true;
             }
         }
         
-        internal bool anchorSell(bool enable)
+        internal bool anchorSell(bool enable, bool invert)
         {   
-            if (enable == true)
-            {
-                if ((Bars.Last(0).Open <  anchor.Result.LastValue))
+            double distance  = deltaPips(this.Symbol, Bars.Last(0).Open, anchor.Result.LastValue, true);
+
+            if ((enable == true) && (distance > distanceAnchor))
+            {   
+                bool a = (Bars.Last(0).Open < anchor.Result.LastValue);
+                if (a)
                 {
-                    return true;
+                    bool risultato = (invert == false) ?  true : false;
+                    return risultato;
                 }
                 else
-                    return false;
+                {
+                    bool risultato1 = (invert == false) ?  false : true;
+                    return risultato1;
+                }
              }
+             
+             if ((enable == true) && (distance <= distanceAnchor))
+            {
+                return false;
+            } 
+            
              else
               {
                 return true;
@@ -598,7 +659,6 @@ namespace cAlgo.Robots
                 }
             }
 
-            //Print("Numero di trade fatti oggi: {0}", Trades);
             return Trades;
         }
 
@@ -779,28 +839,37 @@ namespace cAlgo.Robots
             if (trades == 0)
             {
                 volume = Symbol.QuantityToVolumeInUnits(LotSize);
-                stopLoss = StopLossInPips;
-                takeProfit = TakeProfitInPips;
+                TP = TakeProfitInPips;
             }
             else
             {
                 volume = Symbol.QuantityToVolumeInUnits(positionLot);
+                if (Martingala == true)
+                {
+                    TP = matingalaPipAdding + TakeProfitInPips;
+                }
+                if (Martingala == false)
+                {
+                    TP = TakeProfitInPips;
+                }
             }
 
             if (positionClosed == true)
             {
-                ExecuteMarketOrder(typePosition, this.SymbolName, volume, InstanceName, stopLoss, takeProfit, DateTime.Now.ToString());
+                ExecuteMarketOrder(typePosition, this.SymbolName, volume, InstanceName, StopLossInPips, TP, Server.TimeInUtc.ToString());
                 trades++;
                 resetVolume = 1;
                 positionClosed = false;
+                breakEvenSetted = false;
 
                 text0 = "<b>" + InstanceName + "</b>" + "\r\n";
                 text1 = typePosition + " posizione num: " + trades + "\r\n";
                 text2 = "Volume: " + volume + "\r\n";
                 text3 = "Take profit: " + takeProfit + "\r\n";
                 text4 = "Stop loss: " + stopLoss + "\r\n";
-                text5 = "Margine disp. " + Account.FreeMargin;
-                text_open = text0 + text1 + text2 + text3 + text4 + text5;
+                text5 = "Margine disp. " + Account.FreeMargin + "\r\n";
+                text6 = (EnableHourToClose == true) ?  "Position close in: " + hourToClose + "Hours" : "";
+                text_open = text0 + text1 + text2 + text3 + text4 + text5 + text6;              
 
                 if (IncludeTelegram == true)
                 {
@@ -808,6 +877,9 @@ namespace cAlgo.Robots
                 }             
             }
         }
+        
+        
+
 
         private void ClosePosition(TradeType typePosition)
         {
@@ -835,18 +907,22 @@ namespace cAlgo.Robots
             }
             return false;
         }
-        /*
+        
+
         private void BreakEvenAdjustment()
-        {
+        {   
             if (Enable_breakEven == false)
+                {
+                    return;
+                }
+            
+            var allPositionsBySymbol = Positions.FindAll(InstanceName, this.SymbolName);
+            
+            foreach (Position position in allPositionsBySymbol)
             {
-                return;
-            }
+                if (breakEvenSetted == true)
+                    return;
 
-            var allPositions = Positions.FindAll(InstanceName, this.SymbolName);
-
-            foreach (Position position in allPositions)
-            {
                 var entryPrice = position.EntryPrice;
                 var distance = position.TradeType == TradeType.Buy ? Symbol.Bid - entryPrice : entryPrice - Symbol.Ask;
 
@@ -857,35 +933,25 @@ namespace cAlgo.Robots
                     {
                         if (position.StopLoss <= position.EntryPrice + (Symbol.PipSize * BreakEvenExtraPips) || position.StopLoss == null)
                         {
-                            double newStopLoss = position.EntryPrice + (Symbol.PipSize * BreakEvenExtraPips);
-                            if (position.StopLoss == newStopLoss)
-                            {
-                                return;
-                            }
-                            else
-                                ModifyPosition(position, newStopLoss, position.TakeProfit);
-                            //Print("Stop Loss to Break Even set for BUY position {0}", position.Id);
+                            ModifyPosition(position, position.EntryPrice + (Symbol.PipSize * BreakEvenExtraPips), position.TakeProfit);
+                            breakEvenSetted = true;
+                            Print("Stop Loss to Break Even set for BUY position {0}", position.Id);
                         }
                     }
                     else
                     {
                         if (position.StopLoss >= position.EntryPrice - (Symbol.PipSize * BreakEvenExtraPips) || position.StopLoss == null)
                         {
-                            double newStopLoss = entryPrice - (Symbol.PipSize * BreakEvenExtraPips);
-                            if (position.StopLoss == newStopLoss)
-                            {
-                                return;
-                            }
-                            else
-                                ModifyPosition(position, newStopLoss, position.TakeProfit);
-                            //Print("Stop Loss to Break Even set for SELL position {0}", position.Id);
+                            ModifyPosition(position, entryPrice - (Symbol.PipSize * BreakEvenExtraPips), position.TakeProfit);
+                            breakEvenSetted = true;
+                            Print("Stop Loss to Break Even set for SELL position {0}", position.Id);
                         }
                     }
                 }
             }
         }
         
-        */
+        
         
     }
 }
