@@ -28,8 +28,17 @@ namespace cAlgo.Robots
         [Parameter("Take Profit", Group = "Protection (pips)", DefaultValue = 50, MinValue = 1, Step = 1)]
         public double TakeProfitInPips { get; set; }
 
-        [Parameter("Stop Loss", Group = "Protection (pips)", DefaultValue = 50, MinValue = 0, Step = 1)]
-        public double StopLossInPips { get; set; }
+        [Parameter("Stop Loss general", Group = "Protection (pips)", DefaultValue = 50, MinValue = 0, Step = 1)]
+        public double StopLossInPips { get; set; }        
+        
+        [Parameter("Enable Stop Loss impulsive", Group = "Protection (pips)", DefaultValue = false)]
+        public bool  enableStopImpulsive { get; set; }
+        
+        [Parameter("Stop Loss impulsive", Group = "Protection (pips)", DefaultValue = 50, MinValue = 0, Step = 1)]
+        public double StopLossInPips1 { get; set; }
+        
+        [Parameter("Time (minute) for activating stopLoss", Group = "Protection (pips)", DefaultValue = 10, MinValue = 1, Step = 1)]
+        public int timeStopLoss { get; set; }
 
         [Parameter("Max Spread", Group = "Protection (pips)", DefaultValue = 1000, MinValue = 0, Step = 0.1)]
         public double maxSpread { get; set; }
@@ -272,7 +281,10 @@ namespace cAlgo.Robots
         private AnchoredVWAPExperto anchor;
         
         internal bool breakEvenSetted = false;
+        
         internal double TP = 0;
+        
+        int count = 0;
         
         protected override void OnStart()
         {   
@@ -291,12 +303,16 @@ namespace cAlgo.Robots
 
             //Telegram security protocol
             ServicePointManager.Expect100Continue = true;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;          
             
             if (IncludeTelegram == true)
             {
                 SendTelegram("BOT AVVIATO");
             }
+            
+            //Call timer every seconds
+            Timer.Start(TimeSpan.FromMinutes(1));
+            
         }
 
         protected override void OnTick()
@@ -319,9 +335,52 @@ namespace cAlgo.Robots
         
         }
 
-        private void Timer_TimerTick()
+
+        //Timer
+        protected override void OnTimer()
         {
+            if (enableStopImpulsive == true)
+            {
+            var allPositionsBySymbol = Positions.FindAll(InstanceName, this.SymbolName);
+            
+            foreach (Position position in allPositionsBySymbol)
+            {   
+                if (breakEvenSetted == true)
+                return;
+                
+                var entryPrice = position.EntryPrice;
+                var distance = position.TradeType == TradeType.Buy ? Symbol.Bid - entryPrice : entryPrice - Symbol.Ask;
+                //Print(Math.Round(distance,2)," ",- StopLossInPips1 * Symbol.PipSize);
+                
+                if (distance <= -StopLossInPips1 * Symbol.PipSize)
+                    {
+                        count = count + 1;
+                    }
+                else
+                    {
+                        count = 0;
+                        //Print ("Resetta");   
+                    }
+                
+                if (count >= timeStopLoss)
+                    {   Print ("Trigger impulsive stop loss");                                           
+                        if (position.TradeType == TradeType.Buy)
+                            {   
+                                CloseAllPositions();
+                               //ModifyPosition(position, position.EntryPrice - (Symbol.PipSize * StopLossInPips1), position.TakeProfit);
+                               breakEvenSetted = true;
+                            }
+                        else
+                            {   
+                                CloseAllPositions();
+                                //ModifyPosition(position, entryPrice + (Symbol.PipSize * StopLossInPips1), position.TakeProfit);
+                                breakEvenSetted = true;
+                             }                                                                                                                           
+                    }                               
+            }           
         }
+        } 
+
 
         private void PositionsOnClosed(PositionClosedEventArgs args)
         {
@@ -355,6 +414,7 @@ namespace cAlgo.Robots
             positionClosed = true;
             lastCandle = Bars.Count;
             breakEvenSetted = false;
+            count = 0;
 
             //MARTINGALA
             if (Martingala == true)
@@ -375,6 +435,7 @@ namespace cAlgo.Robots
             {
                 trades = maxTrades;
                 lastCandle = 0;
+                count = 0;
                 return;
             }
 
