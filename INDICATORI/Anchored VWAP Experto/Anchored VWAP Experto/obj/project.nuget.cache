@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "fkt8Iu5nNTSSZ7i6s8eNY5xWY3+9kqo0ejnPv9AtI1KUJhzzXO/JNsjnDxFNCfBQ0XYQrcIqQLGBe3wzfMEwiw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\UTA\\Documents\\cAlgo\\Sources\\Indicators\\Anchored VWAP Experto\\Anchored VWAP Experto\\Anchored VWAP Experto.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\UTA\\.nuget\\packages\\ctrader.automate\\1.0.8\\ctrader.automate.1.0.8.nupkg.sha512"
+  ],
+  "logs": []
+}

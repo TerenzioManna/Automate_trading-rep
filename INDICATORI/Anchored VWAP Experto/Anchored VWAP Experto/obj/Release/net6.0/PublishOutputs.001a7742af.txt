@@ -1,0 +1,4 @@
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\bin\Release\net6.0\publish\Anchored VWAP Experto.dll
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\bin\Release\net6.0\publish\Anchored VWAP Experto.deps.json
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\bin\Release\net6.0\publish\Anchored VWAP Experto.pdb
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\bin\Release\net6.0\publish\cAlgo.API.dll

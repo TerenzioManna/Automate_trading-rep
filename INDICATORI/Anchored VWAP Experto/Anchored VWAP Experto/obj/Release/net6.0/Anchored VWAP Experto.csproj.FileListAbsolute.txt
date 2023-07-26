@@ -1,0 +1,10 @@
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\bin\Release\net6.0\Anchored VWAP Experto.deps.json
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\bin\Release\net6.0\Anchored VWAP Experto.dll
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\bin\Release\net6.0\Anchored VWAP Experto.pdb
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\obj\Release\net6.0\Anchored VWAP Experto.csproj.AssemblyReference.cache
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\obj\Release\net6.0\Anchored VWAP Experto.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\obj\Release\net6.0\Anchored VWAP Experto.csproj.CoreCompileInputs.cache
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\obj\Release\net6.0\Anchored VWAP Experto.dll
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\obj\Release\net6.0\refint\Anchored VWAP Experto.dll
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\obj\Release\net6.0\Anchored VWAP Experto.pdb
+C:\Users\UTA\Documents\cAlgo\Sources\Indicators\Anchored VWAP Experto\Anchored VWAP Experto\obj\Release\net6.0\ref\Anchored VWAP Experto.dll
