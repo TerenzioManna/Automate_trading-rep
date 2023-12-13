@@ -1,0 +1,553 @@
+[
+  {
+    "Flags": "Robot",
+    "Guid": "00000000-0000-0000-0000-000000000000",
+    "Group": "Custom",
+    "FriendlyName": "STATISTICO",
+    "ShortName": null,
+    "TypeName": "cAlgo.Robots.STATISTICO",
+    "AssemblyName": "Automate_trading, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "TimeZone": "UTC",
+    "IsOverlay": false,
+    "ScalePrecision": null,
+    "Levels": [],
+    "Video": null,
+    "Lines": [],
+    "Clouds": [],
+    "Parameters": [
+      {
+        "DefaultValue": "bot1_nas100",
+        "ParameterType": "String",
+        "PropertyName": "InstanceName",
+        "FriendlyName": "Name",
+        "GroupName": "General"
+      },
+      {
+        "DefaultValue": "2023-05-31 00:00:00",
+        "ParameterType": "String",
+        "PropertyName": "string_dateBot",
+        "FriendlyName": "Data avvio",
+        "GroupName": "General"
+      },
+      {
+        "MinValue": -2147483648,
+        "MaxValue": 2147483647,
+        "Step": 1,
+        "DefaultValue": 5000,
+        "ParameterType": "Integer",
+        "PropertyName": "bilancioIniziale",
+        "FriendlyName": "Bilancio iniziale €",
+        "GroupName": "General"
+      },
+      {
+        "MinValue": 0.01,
+        "MaxValue": 1.7976931348623157E+308,
+        "Step": 0.01,
+        "DefaultValue": 0.5,
+        "ParameterType": "Double",
+        "PropertyName": "LotSize",
+        "FriendlyName": "Lot Size",
+        "GroupName": "Volume"
+      },
+      {
+        "MinValue": 1.0,
+        "MaxValue": 1.7976931348623157E+308,
+        "Step": 1.0,
+        "DefaultValue": 50.0,
+        "ParameterType": "Double",
+        "PropertyName": "TakeProfitInPips",
+        "FriendlyName": "Take Profit",
+        "GroupName": "Protection (pips)"
+      },
+      {
+        "MinValue": 0.0,
+        "MaxValue": 1.7976931348623157E+308,
+        "Step": 1.0,
+        "DefaultValue": 50.0,
+        "ParameterType": "Double",
+        "PropertyName": "StopLossInPips",
+        "FriendlyName": "Stop Loss general",
+        "GroupName": "Protection (pips)"
+      },
+      {
+        "DefaultValue": false,
+        "ParameterType": "Boolean",
+        "PropertyName": "enableStopImpulsive",
+        "FriendlyName": "Enable Stop Loss impulsive",
+        "GroupName": "Protection (pips)"
+      },
+      {
+        "MinValue": 0.0,
+        "MaxValue": 1.7976931348623157E+308,
+        "Step": 1.0,
+        "DefaultValue": 50.0,
+        "ParameterType": "Double",
+        "PropertyName": "StopLossInPips1",
+        "FriendlyName": "Stop Loss impulsive",
+        "GroupName": "Protection (pips)"
+      },
+      {
+        "MinValue": 1,
+        "MaxValue": 2147483647,
+        "Step": 1,
+        "DefaultValue": 10,
+        "ParameterType": "Integer",
+        "PropertyName": "timeStopLoss",
+        "FriendlyName": "Time (minute) for activating stopLoss",
+        "GroupName": "Protection (pips)"
+      },
+      {
+        "MinValue": 0.0,
+        "MaxValue": 1.7976931348623157E+308,
+        "Step": 0.1,
+        "DefaultValue": 1000.0,
+        "ParameterType": "Double",
+        "PropertyName": "maxSpread",
+        "FriendlyName": "Max Spread",
+        "GroupName": "Protection (pips)"
+      },
+      {
+        "DefaultValue": false,
+        "ParameterType": "Boolean",
+        "PropertyName": "Enable_breakEven",
+        "FriendlyName": "Enable",
+        "GroupName": "Protection Break-Even (pips)"
+      },
+      {
+        "MinValue": 0.0,
+        "MaxValue": 1.7976931348623157E+308,
+        "Step": 1.0,
+        "DefaultValue": 10.0,
+        "ParameterType": "Double",
+        "PropertyName": "BreakEvenPips",
+        "FriendlyName": "Trigger (must be > Minimum)",
+        "GroupName": "Protection Break-Even (pips)"
+      },
+      {
+        "MinValue": 0.0,
+        "MaxValue": 1.7976931348623157E+308,
+        "Step": 1.0,
+        "DefaultValue": 5.0,
+        "ParameterType": "Double",
+        "PropertyName": "BreakEvenExtraPips",
+        "FriendlyName": "Minimum",
+        "GroupName": "Protection Break-Even (pips)"
+      },
+      {
+        "DefaultValue": true,
+        "ParameterType": "Boolean",
+        "PropertyName": "On_bar",
+        "FriendlyName": "Run on opening bar",
+        "GroupName": "Strategy"
+      },
+      {
+        "DefaultValue": false,
+        "ParameterType": "Boolean",
+        "PropertyName": "orderLost",
+        "FriendlyName": "Make new order immediately after lost",
+        "GroupName": "Strategy"
+      },
+      {
+        "DefaultValue": true,
+        "ParameterType": "Boolean",
+        "PropertyName": "nextCandle",
+        "FriendlyName": "Wait next candle to make order",
+        "GroupName": "Strategy"
+      },
+      {
+        "DefaultValue": true,
+        "ParameterType": "Boolean",
+        "PropertyName": "StopWhenWin",
+        "FriendlyName": "Stop new trade when total daily profit > 0",
+        "GroupName": "Strategy"
+      },
+      {
+        "DefaultValue": true,
+        "ParameterType": "Boolean",
+        "PropertyName": "closePosition",
+        "FriendlyName": "Force to close position daily",
+        "GroupName": "Strategy"
+      },
+      {
+        "MinValue": 1,
+        "MaxValue": 2147483647,
+        "Step": 1,
+        "DefaultValue": 2,
+        "ParameterType": "Integer",
+        "PropertyName": "maxTrades",
+        "FriendlyName": "Max trades in a day",
+        "GroupName": "Strategy"
+      },
+      {
+        "DefaultValue": false,
+        "ParameterType": "Boolean",
+        "PropertyName": "EnableHourToClose",
+        "FriendlyName": "If profit is negative, close after hours",
+        "GroupName": "Strategy - ForceClose"
+      },
+      {
+        "MinValue": -2147483648,
+        "MaxValue": 2147483647,
+        "Step": 1,
+        "DefaultValue": 4,
+        "ParameterType": "Integer",
+        "PropertyName": "hourToClose",
+        "FriendlyName": "Hours before close position",
+        "GroupName": "Strategy - ForceClose"
+      },
+      {
+        "DefaultValue": false,
+        "ParameterType": "Boolean",
+        "PropertyName": "enableAnchor",
+        "FriendlyName": "Enable",
+        "GroupName": "Strategy (Anchor)"
+      },
+      {
+        "DefaultValue": false,
+        "ParameterType": "Boolean",
+        "PropertyName": "invertAnchor",
+        "FriendlyName": "Invert direction",
+        "GroupName": "Strategy (Anchor)"
+      },
+      {
+        "MinValue": -2147483648,
+        "MaxValue": 2147483647,
+        "Step": 1,
+        "DefaultValue": 10,
+        "ParameterType": "Integer",
+        "PropertyName": "indexAnchor",
+        "FriendlyName": "Number of bars back",
+        "GroupName": "Strategy (Anchor)"
+      },
+      {
+        "MinValue": -1.7976931348623157E+308,
+        "MaxValue": 1.7976931348623157E+308,
+        "Step": 0.1,
+        "DefaultValue": 0.0,
+        "ParameterType": "Double",
+        "PropertyName": "distanceAnchor",
+        "FriendlyName": "Distance pips from price",
+        "GroupName": "Strategy (Anchor)"
+      },
+      {
+        "DefaultValue": false,
+        "ParameterType": "Boolean",
+        "PropertyName": "Martingala",
+        "FriendlyName": "Enable",
+        "GroupName": "Strategy (Martingala)"
+      },
+      {
+        "MinValue": 0.0,
+        "MaxValue": 1.7976931348623157E+308,
+        "Step": 0.1,
+        "DefaultValue": 0.1,
+        "ParameterType": "Double",
+        "PropertyName": "lotAdding",
+        "FriendlyName": "Lot adding",
+        "GroupName": "Strategy (Martingala)"
+      },
+      {
+        "MinValue": 0.0,
+        "MaxValue": 1.7976931348623157E+308,
+        "Step": 1.0,
+        "DefaultValue": 1.0,
+        "ParameterType": "Double",
+        "PropertyName": "matingalaPipAdding",
+        "FriendlyName": "Pips to add",
+        "GroupName": "Strategy (Martingala)"
+      },
+      {
+        "MinValue": 1,
+        "MaxValue": 2,
+        "Step": 1,
+        "DefaultValue": 1,
+        "ParameterType": "Integer",
+        "PropertyName": "sb1",
+        "FriendlyName": "SB1",
+        "GroupName": "Strategy Buy (Compra = 1, Vendi = 2)"
+      },
+      {
+        "MinValue": 1,
+        "MaxValue": 2,
+        "Step": 1,
+        "DefaultValue": 1,
+        "ParameterType": "Integer",
+        "PropertyName": "sb2",
+        "FriendlyName": "SB2",
+        "GroupName": "Strategy Buy (Compra = 1, Vendi = 2)"
+      },
+      {
+        "MinValue": 1,
+        "MaxValue": 2,
+        "Step": 1,
+        "DefaultValue": 1,
+        "ParameterType": "Integer",
+        "PropertyName": "sb3",
+        "FriendlyName": "SB3",
+        "GroupName": "Strategy Buy (Compra = 1, Vendi = 2)"
+      },
+      {
+        "MinValue": 1,
+        "MaxValue": 2,
+        "Step": 1,
+        "DefaultValue": 1,
+        "ParameterType": "Integer",
+        "PropertyName": "sb4",
+        "FriendlyName": "SB4",
+        "GroupName": "Strategy Buy (Compra = 1, Vendi = 2)"
+      },
+      {
+        "MinValue": 1,
+        "MaxValue": 2,
+        "Step": 1,
+        "DefaultValue": 2,
+        "ParameterType": "Integer",
+        "PropertyName": "ss1",
+        "FriendlyName": "SS1",
+        "GroupName": "Strategy Sell (Compra = 1, Vendi = 2)"
+      },
+      {
+        "MinValue": 1,
+        "MaxValue": 2,
+        "Step": 1,
+        "DefaultValue": 2,
+        "ParameterType": "Integer",
+        "PropertyName": "ss2",
+        "FriendlyName": "SS2",
+        "GroupName": "Strategy Sell (Compra = 1, Vendi = 2)"
+      },
+      {
+        "MinValue": 1,
+        "MaxValue": 2,
+        "Step": 1,
+        "DefaultValue": 2,
+        "ParameterType": "Integer",
+        "PropertyName": "ss3",
+        "FriendlyName": "SS3",
+        "GroupName": "Strategy Sell (Compra = 1, Vendi = 2)"
+      },
+      {
+        "MinValue": 1,
+        "MaxValue": 2,
+        "Step": 1,
+        "DefaultValue": 2,
+        "ParameterType": "Integer",
+        "PropertyName": "ss4",
+        "FriendlyName": "SS4",
+        "GroupName": "Strategy Sell (Compra = 1, Vendi = 2)"
+      },
+      {
+        "MinValue": 1,
+        "MaxValue": 2147483647,
+        "Step": 1,
+        "DefaultValue": 1,
+        "ParameterType": "Integer",
+        "PropertyName": "b1",
+        "FriendlyName": "B1",
+        "GroupName": "Strategy (Positions back candle Buy)"
+      },
+      {
+        "MinValue": 2,
+        "MaxValue": 2147483647,
+        "Step": 1,
+        "DefaultValue": 2,
+        "ParameterType": "Integer",
+        "PropertyName": "b2",
+        "FriendlyName": "B2",
+        "GroupName": "Strategy (Positions back candle Buy)"
+      },
+      {
+        "MinValue": 3,
+        "MaxValue": 2147483647,
+        "Step": 1,
+        "DefaultValue": 24,
+        "ParameterType": "Integer",
+        "PropertyName": "b3",
+        "FriendlyName": "B3",
+        "GroupName": "Strategy (Positions back candle Buy)"
+      },
+      {
+        "MinValue": 4,
+        "MaxValue": 2147483647,
+        "Step": 1,
+        "DefaultValue": 48,
+        "ParameterType": "Integer",
+        "PropertyName": "b4",
+        "FriendlyName": "B4",
+        "GroupName": "Strategy (Positions back candle Buy)"
+      },
+      {
+        "MinValue": 1,
+        "MaxValue": 2147483647,
+        "Step": 1,
+        "DefaultValue": 1,
+        "ParameterType": "Integer",
+        "PropertyName": "s1",
+        "FriendlyName": "S1",
+        "GroupName": "Strategy (Positions back candle Sell)"
+      },
+      {
+        "MinValue": 2,
+        "MaxValue": 2147483647,
+        "Step": 1,
+        "DefaultValue": 2,
+        "ParameterType": "Integer",
+        "PropertyName": "s2",
+        "FriendlyName": "S2",
+        "GroupName": "Strategy (Positions back candle Sell)"
+      },
+      {
+        "MinValue": 3,
+        "MaxValue": 2147483647,
+        "Step": 1,
+        "DefaultValue": 24,
+        "ParameterType": "Integer",
+        "PropertyName": "s3",
+        "FriendlyName": "S3",
+        "GroupName": "Strategy (Positions back candle Sell)"
+      },
+      {
+        "MinValue": 4,
+        "MaxValue": 2147483647,
+        "Step": 1,
+        "DefaultValue": 48,
+        "ParameterType": "Integer",
+        "PropertyName": "s4",
+        "FriendlyName": "S4",
+        "GroupName": "Strategy (Positions back candle Sell)"
+      },
+      {
+        "MinValue": 0,
+        "MaxValue": 2147483647,
+        "Step": 1,
+        "DefaultValue": 0,
+        "ParameterType": "Integer",
+        "PropertyName": "minB_b1",
+        "FriendlyName": "B1_minB",
+        "GroupName": "Strategy (min body candle Buy)"
+      },
+      {
+        "MinValue": 0,
+        "MaxValue": 2147483647,
+        "Step": 1,
+        "DefaultValue": 0,
+        "ParameterType": "Integer",
+        "PropertyName": "minB_b2",
+        "FriendlyName": "B2_minB",
+        "GroupName": "Strategy (min body candle Buy)"
+      },
+      {
+        "MinValue": 0,
+        "MaxValue": 2147483647,
+        "Step": 1,
+        "DefaultValue": 0,
+        "ParameterType": "Integer",
+        "PropertyName": "minB_s1",
+        "FriendlyName": "S1_minB",
+        "GroupName": "Strategy (min body candle Sell)"
+      },
+      {
+        "MinValue": 0,
+        "MaxValue": 2147483647,
+        "Step": 1,
+        "DefaultValue": 0,
+        "ParameterType": "Integer",
+        "PropertyName": "minB_s2",
+        "FriendlyName": "S2_minB",
+        "GroupName": "Strategy (min body candle Sell)"
+      },
+      {
+        "DefaultValue": true,
+        "ParameterType": "Boolean",
+        "PropertyName": "enableTime",
+        "FriendlyName": "Enable",
+        "GroupName": "Strategy to open on Time (Utc)"
+      },
+      {
+        "MinValue": 0,
+        "MaxValue": 23,
+        "Step": 1,
+        "DefaultValue": 15,
+        "ParameterType": "Integer",
+        "PropertyName": "openHour",
+        "FriendlyName": "Opening hour",
+        "GroupName": "Strategy to open on Time (Utc)"
+      },
+      {
+        "MinValue": 0,
+        "MaxValue": 23,
+        "Step": 1,
+        "DefaultValue": 18,
+        "ParameterType": "Integer",
+        "PropertyName": "closeHour",
+        "FriendlyName": "Close hour",
+        "GroupName": "Strategy to open on Time (Utc)"
+      },
+      {
+        "MinValue": 0,
+        "MaxValue": 59,
+        "Step": 1,
+        "DefaultValue": 0,
+        "ParameterType": "Integer",
+        "PropertyName": "openMinute",
+        "FriendlyName": "Opening minute",
+        "GroupName": "Strategy to open on Time (Utc)"
+      },
+      {
+        "MinValue": 1,
+        "MaxValue": 59,
+        "Step": 1,
+        "DefaultValue": 59,
+        "ParameterType": "Integer",
+        "PropertyName": "closeMinute",
+        "FriendlyName": "Closing minute",
+        "GroupName": "Strategy to open on Time (Utc)"
+      },
+      {
+        "DefaultValue": false,
+        "ParameterType": "Boolean",
+        "PropertyName": "enableCloseForce",
+        "FriendlyName": "Enable",
+        "GroupName": "Strategy to force closing trade (Utc)"
+      },
+      {
+        "MinValue": 0,
+        "MaxValue": 23,
+        "Step": 1,
+        "DefaultValue": 22,
+        "ParameterType": "Integer",
+        "PropertyName": "closeForceHour",
+        "FriendlyName": "Hour",
+        "GroupName": "Strategy to force closing trade (Utc)"
+      },
+      {
+        "DefaultValue": false,
+        "ParameterType": "Boolean",
+        "PropertyName": "IncludeTelegram",
+        "FriendlyName": "Send a Telegram",
+        "GroupName": "Telegram Notifications"
+      },
+      {
+        "DefaultValue": "5261129940:AAFKZoXMGYjUBmtmsdIGbuKOCA0jEvwWQSk",
+        "ParameterType": "String",
+        "PropertyName": "BotToken",
+        "FriendlyName": "Bot Token",
+        "GroupName": "Telegram Notifications"
+      },
+      {
+        "DefaultValue": "-1001559045628",
+        "ParameterType": "String",
+        "PropertyName": "ChatID",
+        "FriendlyName": "Chat ID",
+        "GroupName": "Telegram Notifications"
+      }
+    ],
+    "Capabilities": [
+      {
+        "CapabilityType": "FullTrust"
+      }
+    ],
+    "CustomAttributes": [],
+    "Sets": []
+  }
+]

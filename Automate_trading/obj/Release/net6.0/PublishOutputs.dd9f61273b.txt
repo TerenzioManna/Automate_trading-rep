@@ -1,0 +1,8 @@
+C:\Users\User\Documents\cAlgo\Sources\Robots\Automate_trading\Automate_trading\bin\Release\net6.0\publish\Automate_trading.dll
+C:\Users\User\Documents\cAlgo\Sources\Robots\Automate_trading\Automate_trading\bin\Release\net6.0\publish\Automate_trading.deps.json
+C:\Users\User\Documents\cAlgo\Sources\Robots\Automate_trading\Automate_trading\bin\Release\net6.0\publish\Automate_trading.pdb
+C:\Users\User\Documents\cAlgo\Sources\Robots\Automate_trading\Automate_trading\bin\Release\net6.0\publish\cAlgo.API.dll
+C:\Users\User\Documents\cAlgo\Sources\Robots\Automate_trading\Automate_trading\bin\Release\net6.0\publish\Newtonsoft.Json.dll
+C:\Users\User\Documents\cAlgo\Sources\Robots\Automate_trading\Automate_trading\bin\Release\net6.0\publish\Telegram.Bot.dll
+C:\Users\User\Documents\cAlgo\Sources\Robots\Automate_trading\Automate_trading\bin\Release\net6.0\publish\Anchored VWAP Experto.dll
+C:\Users\User\Documents\cAlgo\Sources\Robots\Automate_trading\Automate_trading\bin\Release\net6.0\publish\Anchored VWAP Experto.pdb
